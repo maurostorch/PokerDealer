@@ -1,1 +1,1 @@
-web: java -jar target/poker.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/poker.jar
