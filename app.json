@@ -1,0 +1,6 @@
+{
+  "name": "Spring Boot - Poker Dealer",
+  "description": "This is Poker Dealer API using Spring Boot.",
+  "repository": "https://github.com/maurostorch/PokerDealer",
+  "image": "heroku/java"
+}
