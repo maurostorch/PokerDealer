@@ -10,8 +10,12 @@ public class CardTest {
 	public void testCardConstructorForSuit() {
 		Card card = new Card("hearts","ace");
 		
-		assertNotEquals("ace", card.getSuit());
 		assertEquals("hearts", card.getSuit());
+		assertNotEquals("ace", card.getSuit());
+		
+		card.setSuit("clubs");
+		assertEquals("clubs", card.getSuit());
+		assertNotEquals("hearts", card.getSuit());
 		
 	}
 	
@@ -21,6 +25,10 @@ public class CardTest {
 		
 		assertEquals("ace", card.getValue());
 		assertNotEquals("hearts", card.getValue());
+		
+		card.setValue("Jack");
+		assertEquals("Jack", card.getValue());
+		assertNotEquals("ace", card.getValue());
 	}
 	
 	@Test
@@ -36,10 +44,12 @@ public class CardTest {
 		assertFalse(c1.equals(c2));
 		assertFalse(c1.equals(c3));
 		assertFalse(c1.equals(c4));
-		assertTrue(c1.equals(c5));		
+		assertTrue(c1.equals(c5));
+		assertFalse(c1.equals(new Integer("1")));
 		
 	}
 	
+	@Test
 	public void testToString() {
 		Card c1 = new Card("hearts","ace");
 		
