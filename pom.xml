@@ -132,6 +132,7 @@
 						<configuration>
 							<excludes>
 								<exclude>**/PokerApplication.class</exclude>
+								<exclude>**/JerseyConfig.class</exclude>
 							</excludes>
 						</configuration>
 						<executions>
