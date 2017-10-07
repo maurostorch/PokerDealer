@@ -32,7 +32,7 @@ public class MemoryOptimizedCardsService implements CardsService {
 	@Override
 	public Card getCardFromTop() throws Exception {
 		try {
-			int next = new Random(System.currentTimeMillis()).nextInt(this.deck.size());
+			int next = new Random(System.currentTimeMillis()).nextInt(this.deck.size()==0?1:this.deck.size());
 			Card c = this.deck.remove(next);
 			out.add(c);
 			return c;
