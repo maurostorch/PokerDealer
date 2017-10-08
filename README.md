@@ -3,8 +3,8 @@
 A simple application for a Poker Dealer able to shuffle a deck and give all 52 cards.
 
 ## API
-* `/api/dealer/shuffle` - assemble all cards and proceed with a shuffle
-* `/api/dealer/dealOneCard` - pick a card from deck
+* `/api/deck` - POST operation to assemble all cards and proceed with a shuffle
+* `/api/deck` - GET operation to pick a card from deck
 
 ## Heroku Deploy
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)

@@ -3,6 +3,7 @@ package com.example.poker.rest;
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -17,22 +18,20 @@ import com.example.poker.service.CardsService;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "card")
-@Path("/dealer")
+@Path("/deck")
 public class Dealer {
 
 	@Autowired
 	CardsService cardService;
 	
-	@GET
+	@POST
 	@PermitAll
-	@Path("/shuffle")
 	public void shuffle() {
 		cardService.shuffleCards();
 	}
 	
 	@GET
 	@PermitAll
-	@Path("/dealOneCard")
 	@Produces("application/json")
 	public Card dealOneCard() {
 		try {
