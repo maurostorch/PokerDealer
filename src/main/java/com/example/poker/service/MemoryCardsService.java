@@ -30,7 +30,6 @@ public class MemoryCardsService implements CardsService {
 				this.decks.get(tableId).add(new Card(s,v));
 			}
 		}
-		this.outs.put(tableId, new ArrayList<>());
 	}
 	
 	private List<Card> getDeck(int tableId) {
@@ -42,7 +41,7 @@ public class MemoryCardsService implements CardsService {
 	
 	private List<Card> getOut(int tableId) {
 		if (!this.outs.containsKey(tableId)) {
-			init(tableId);
+			this.outs.put(tableId, new ArrayList<>());
 		}
 		return this.outs.get(tableId);
 	}
