@@ -1,9 +1,10 @@
 package com.example.poker.rest;
 
 import javax.annotation.security.PermitAll;
-import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -17,26 +18,24 @@ import com.example.poker.service.CardsService;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "card")
-@Path("/dealer")
+@Path("/table/{tableid}/deck")
 public class Dealer {
 
 	@Autowired
 	CardsService cardService;
 	
-	@GET
+	@POST
 	@PermitAll
-	@Path("/shuffle")
-	public void shuffle() {
-		cardService.shuffleCards();
+	public void shuffle(@PathParam("tableid") int tableId) {
+		cardService.shuffleCards(tableId);
 	}
 	
 	@GET
 	@PermitAll
-	@Path("/dealOneCard")
 	@Produces("application/json")
-	public Card dealOneCard() {
+	public Card dealOneCard(@PathParam("tableid") int tableId) {
 		try {
-			return cardService.getCardFromTop();
+			return cardService.getCardFromTop(tableId);
 		} catch (Exception e) {
 			throw new WebApplicationException("No more cards", 404);
 		}

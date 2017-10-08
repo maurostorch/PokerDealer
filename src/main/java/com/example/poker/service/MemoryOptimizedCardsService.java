@@ -2,9 +2,11 @@ package com.example.poker.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -15,17 +17,36 @@ public class MemoryOptimizedCardsService implements CardsService {
 
 	private final static String suits[] = {"hearts", "spades", "clubs", "diamonds"};
 	private final static String values[] = {"Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"};
-	private List<Card> deck;
-	private List<Card> out;
+	private Map<Integer,List<Card>> decks;
+	private Map<Integer,List<Card>> outs;
 	
 	public MemoryOptimizedCardsService() {
-		this.deck = new LinkedList<>();
+		this.decks = new HashMap<>();
+		this.outs  = new HashMap<>();
+	}
+	
+	private void init(int tableId) {
+		this.decks.put(tableId,new LinkedList<>());
 		for (String s:Arrays.asList(suits)) {
 			for (String v:Arrays.asList(values)) {
-				this.deck.add(new Card(s,v));
+				this.decks.get(tableId).add(new Card(s,v));
 			}
 		}
-		this.out = new ArrayList<>();
+		this.outs.put(tableId, new ArrayList<>());
+	}
+	
+	private List<Card> getDeck(int tableId) {
+		if (!this.decks.containsKey(tableId)) {
+			init(tableId);
+		}
+		return this.decks.get(tableId);
+	}
+	
+	private List<Card> getOut(int tableId) {
+		if (!this.outs.containsKey(tableId)) {
+			init(tableId);
+		}
+		return this.outs.get(tableId);
 	}
 	
 	/**
@@ -34,11 +55,13 @@ public class MemoryOptimizedCardsService implements CardsService {
 	 * when using an Iterator and its remove method
 	 */
 	@Override
-	public Card getCardFromTop() throws Exception {
+	public Card getCardFromTop(int tableId) throws Exception {
+		List<Card> deck = this.getDeck(tableId);
+		List<Card> out = this.getOut(tableId);
 		log.fine("Dealing one card.");
 		try {
-			int next = new Random(System.currentTimeMillis()).nextInt(this.deck.size()==0?1:this.deck.size());
-			Iterator<Card> iter = this.deck.listIterator(next);
+			int next = new Random(System.currentTimeMillis()).nextInt(deck.size()==0?1:deck.size());
+			Iterator<Card> iter = deck.listIterator(next);
 			Card c = iter.next();
 			iter.remove();
 			out.add(c);
@@ -50,15 +73,15 @@ public class MemoryOptimizedCardsService implements CardsService {
 	}
 
 	@Override
-	public void shuffleCards() {
+	public void shuffleCards(int tableId) {
 		log.fine("Shuffling..");
-		this.reset();
+		this.reset(tableId);
 		log.fine("Shuffling.. ended.");
 	}
 
-	private void reset() {
-		this.deck.addAll(this.out);
-		this.out.clear();
+	private void reset(int tableId) {
+		this.decks.get(tableId).addAll(this.outs.get(tableId));
+		this.outs.get(tableId).clear();
 	}
 
 }
