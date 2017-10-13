@@ -24,7 +24,7 @@ public class DealerTest {
 	@Test
 	public void testShuffle() {
 		try {
-			service.shuffle();
+			service.shuffle(1);
 		} catch(Exception e) {
 			fail("Exception catched:"+e.getMessage());
 		}
@@ -34,7 +34,7 @@ public class DealerTest {
 	public void testdealOneCard() {
 		Card c=null;
 		try {
-			c = service.dealOneCard();
+			c = service.dealOneCard(1);
 			assertNotNull(c);
 		} catch (Exception e) {
 			fail("Exception catched:"+e.getMessage());
@@ -45,9 +45,9 @@ public class DealerTest {
 	public void testdealOneCard_DeckEnd() {
 		try {
 			for (int i=0;i<52;i++) {
-				service.dealOneCard();
+				service.dealOneCard(1);
 			}
-			service.dealOneCard();
+			service.dealOneCard(1);
 	        fail("Expected an Exception to be thrown");
 	    } catch (Exception anIndexOutOfBoundsException) {
 	        assertThat(anIndexOutOfBoundsException.getMessage(), is("No more cards"));

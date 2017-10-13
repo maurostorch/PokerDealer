@@ -2,8 +2,8 @@ package com.example.poker.service;
 
 public interface CardsService {
 		
-	Card getCardFromTop() throws Exception;
+	Card getCardFromTop(int tableId) throws Exception;
 	
-	void shuffleCards();
+	void shuffleCards(int tableId);
 
 }
