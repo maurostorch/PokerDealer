@@ -78,8 +78,8 @@ public class MemoryCardsService implements CardsService {
 	}
 
 	private void reset(int tableId) {
-		this.decks.get(tableId).addAll(this.outs.get(tableId));
-		this.outs.get(tableId).clear();
+		this.getDeck(tableId).addAll(this.getOut(tableId));
+		this.getOut(tableId).clear();
 	}
 
 }

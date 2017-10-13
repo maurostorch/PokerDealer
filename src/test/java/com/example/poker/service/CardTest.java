@@ -13,10 +13,6 @@ public class CardTest {
 		assertEquals("hearts", card.getSuit());
 		assertNotEquals("ace", card.getSuit());
 		
-		card.setSuit("clubs");
-		assertEquals("clubs", card.getSuit());
-		assertNotEquals("hearts", card.getSuit());
-		
 	}
 	
 	@Test
@@ -26,9 +22,6 @@ public class CardTest {
 		assertEquals("ace", card.getValue());
 		assertNotEquals("hearts", card.getValue());
 		
-		card.setValue("Jack");
-		assertEquals("Jack", card.getValue());
-		assertNotEquals("ace", card.getValue());
 	}
 	
 	@Test
