@@ -49,32 +49,36 @@ public class MemoryCardsService implements CardsService {
 	@Override
 	public Card getCardFromTop(int tableId) throws Exception {
 		List<Card> deck = this.getDeck(tableId);
-		List<Card> out = this.getOut(tableId);
-		log.fine("Dealing one card.");
-		try {
-			Card c = deck.remove(deck.size()-1);
-			out.add(c);
-			return c;
-		} catch (IndexOutOfBoundsException e) {
-			log.fine("No more cards");
-			throw new Exception("No more cards");
+		synchronized (deck) {
+			List<Card> out = this.getOut(tableId);
+			log.fine("Dealing one card.");
+			try {
+				Card c = deck.remove(deck.size()-1);
+				out.add(c);
+				return c;
+			} catch (IndexOutOfBoundsException e) {
+				log.fine("No more cards");
+				throw new Exception("No more cards");
+			}
 		}
 	}
 
 	@Override
 	public void shuffleCards(int tableId) {
 		List<Card> deck = this.getDeck(tableId);
-		log.fine("Shuffling..");
-		Random r = new Random(System.currentTimeMillis());
-		this.reset(tableId);
-		int size = deck.size();
-		for (int i = size-1;i>0;i--) {
-			int random = r.nextInt(i+1);
-			Card _t = deck.get(i);
-			deck.set(i, deck.get(random));
-			deck.set(random, _t);
+		synchronized (deck) {
+			log.fine("Shuffling..");
+			Random r = new Random(System.currentTimeMillis());
+			this.reset(tableId);
+			int size = deck.size();
+			for (int i = size-1;i>0;i--) {
+				int random = r.nextInt(i+1);
+				Card _t = deck.get(i);
+				deck.set(i, deck.get(random));
+				deck.set(random, _t);
+			}
+			log.fine("Shuffling.. ended.");
 		}
-		log.fine("Shuffling.. ended.");
 	}
 
 	private void reset(int tableId) {

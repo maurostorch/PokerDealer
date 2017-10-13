@@ -56,26 +56,30 @@ public class MemoryOptimizedCardsService implements CardsService {
 	@Override
 	public Card getCardFromTop(int tableId) throws Exception {
 		List<Card> deck = this.getDeck(tableId);
-		List<Card> out = this.getOut(tableId);
-		log.fine("Dealing one card.");
-		try {
-			int next = new Random(System.currentTimeMillis()).nextInt(deck.size()==0?1:deck.size());
-			Iterator<Card> iter = deck.listIterator(next);
-			Card c = iter.next();
-			iter.remove();
-			out.add(c);
-			return c;
-		} catch (NoSuchElementException e) {
-			log.fine("No more cards");
-			throw new Exception("No more cards");
+		synchronized (deck) {
+			List<Card> out = this.getOut(tableId);
+			log.fine("Dealing one card.");
+			try {
+				int next = new Random(System.currentTimeMillis()).nextInt(deck.size()==0?1:deck.size());
+				Iterator<Card> iter = deck.listIterator(next);
+				Card c = iter.next();
+				iter.remove();
+				out.add(c);
+				return c;
+			} catch (NoSuchElementException e) {
+				log.fine("No more cards");
+				throw new Exception("No more cards");
+			}
 		}
 	}
 
 	@Override
 	public void shuffleCards(int tableId) {
-		log.fine("Shuffling..");
-		this.reset(tableId);
-		log.fine("Shuffling.. ended.");
+		synchronized (this.getDeck(tableId)) {
+			log.fine("Shuffling..");
+			this.reset(tableId);
+			log.fine("Shuffling.. ended.");
+		}
 	}
 
 	private void reset(int tableId) {
